@@ -1,6 +1,6 @@
 /* =========================================================
-   Config (PLAN.md 6.1). Fill {{TOKENS}} here AND in index.html hrefs,
-   so mailto links also work with JS off.
+   Config (PLAN.md 6.1). Fill the placeholder tokens here AND in the
+   index.html hrefs, so mailto links also work with JS off.
    ========================================================= */
 const CONTACT = {
   email: "{{CONTACT_EMAIL}}",
@@ -112,33 +112,38 @@ function inView(el) {
 }
 
 if (canObserve && !reduceMotion.matches) {
+  root.classList.add("js");
+
   const revealables = [...document.querySelectorAll(REVEAL_SELECTOR)];
   const tracks = document.querySelector(".flow__tracks");
+  const seen = new WeakSet();
 
-  // Anything already on screen at load starts in its final state (no flash).
-  revealables.forEach((el) => {
-    el.setAttribute("data-reveal", "");
-    if (inView(el)) el.classList.add("is-visible", "is-done");
-  });
+  // An element only takes its hidden pre-reveal state inside the observer's
+  // own first callback. If the observer never calls back (a broken or blocked
+  // script), nothing is ever hidden.
+  const arm = (el, attr, onScreen) => {
+    seen.add(el);
+    if (onScreen) return false;          // already visible: final state, no animation
+    el.setAttribute(attr, "");
+    return true;
+  };
 
-  if (tracks) {
-    tracks.querySelectorAll("ol").forEach((list) => {
-      [...list.children].forEach((li, i) => li.style.setProperty("--i", i));
+  const reveal = (el) => {
+    el.classList.add("is-visible");
+    el.addEventListener("transitionend", (e) => {
+      if (e.target === el && e.propertyName === "clip-path") el.classList.add("is-done");
     });
-    tracks.setAttribute("data-seq", "");
-    if (inView(tracks)) tracks.classList.add("is-playing");
-  }
-
-  root.classList.add("js");
+  };
 
   const revealObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
       const el = entry.target;
-      el.classList.add("is-visible");
-      el.addEventListener("transitionend", (e) => {
-        if (e.target === el && e.propertyName === "clip-path") el.classList.add("is-done");
-      });
+      if (!seen.has(el)) {
+        if (!arm(el, "data-reveal", inView(el))) observer.unobserve(el);
+        return;
+      }
+      if (!entry.isIntersecting) return;
+      reveal(el);
       observer.unobserve(el);
     });
   }, {
@@ -148,28 +153,34 @@ if (canObserve && !reduceMotion.matches) {
     threshold: 0,
     rootMargin: "0px 0px -20% 0px"
   });
+  revealables.forEach((el) => revealObserver.observe(el));
 
-  revealables.forEach((el) => {
-    if (!el.classList.contains("is-visible")) revealObserver.observe(el);
-  });
-
-  // Keyboard users can Tab into a block before it is scrolled into reveal
-  // range: show it at once so focus never lands on something hidden.
-  document.addEventListener("focusin", (e) => {
-    const block = e.target.closest?.("[data-reveal]:not(.is-visible)");
-    if (!block) return;
-    block.classList.add("is-visible", "is-done");
-    revealObserver.unobserve(block);
-  });
-
-  if (tracks && !tracks.classList.contains("is-playing")) {
+  if (tracks) {
+    tracks.querySelectorAll("ol").forEach((list) => {
+      [...list.children].forEach((li, i) => li.style.setProperty("--i", i));
+    });
     const flowObserver = new IntersectionObserver(([entry], observer) => {
+      if (!seen.has(tracks)) {
+        if (!arm(tracks, "data-seq", inView(tracks))) observer.disconnect();
+        return;
+      }
       if (!entry.isIntersecting) return;
       tracks.classList.add("is-playing");
       observer.disconnect();
     }, { threshold: 0.3 });
     flowObserver.observe(tracks);
   }
+
+  // Keyboard users can Tab into a block before it is scrolled into reveal
+  // range: show it at once so focus never lands on something hidden.
+  document.addEventListener("focusin", (e) => {
+    const block = e.target.closest?.("[data-reveal]:not(.is-visible)");
+    if (block) {
+      block.classList.add("is-visible", "is-done");
+      revealObserver.unobserve(block);
+    }
+    if (tracks && tracks.contains(e.target)) tracks.classList.add("is-playing");
+  });
 } else {
   // Still mark JS as present for non-motion styling hooks.
   root.classList.add("js");

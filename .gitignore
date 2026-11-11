@@ -1,0 +1,7 @@
+# Installed agent skills (reinstall from skills-lock.json)
+.agents/
+.claude/skills/
+
+# taste-skill check output
+.taste-skill/
+shots/

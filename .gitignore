@@ -5,3 +5,8 @@
 # taste-skill check output
 .taste-skill/
 shots/
+
+# Planning and QA docs (kept locally, not published)
+PLAN.md
+CLAUDE.md
+QA-REPORT.md

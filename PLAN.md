@@ -298,13 +298,13 @@ const CONTACT = {
 - [x] No em dashes anywhere in visible copy.
 
 ## 11. Open decisions (the user resolves these; the agent does not guess)
-1. `{{YOUR_NAME}}` and `{{CONTACT_EMAIL}}` values.
-2. Tier names, prices, and price format (one-time, monthly, or both). Expected after the Day 4 client conversation.
-3. Tier 3 support detail (`{{TIER_3_SUPPORT_DETAIL}}`), and any contract terms worth stating.
-4. Whether "works with the phone and social page you already use" (5.3) is a promise you can keep for every client.
-5. Whether to label Tier 2 as the recommended pick, and with what wording.
-6. Hosting and domain (the page is static and will deploy anywhere).
-7. Open Graph image: none for now, or one designed later.
+1. `{{YOUR_NAME}}` and `{{CONTACT_EMAIL}}` values. **Resolved 2026-11-11:** Christian Toro, christian.toro620@gmail.com.
+2. Tier names, prices, and price format (one-time, monthly, or both). Expected after the Day 4 client conversation. **Resolved 2026-11-11:** Answer $749, Answer + Book $1,399, Hands-off $2,250; one-time fees, shown as "$X ONE-TIME".
+3. Tier 3 support detail (`{{TIER_3_SUPPORT_DETAIL}}`), and any contract terms worth stating. **Resolved 2026-11-11:** "priority support, $399/month". Contract terms: none stated on the page.
+4. Whether "works with the phone and social page you already use" (5.3) is a promise you can keep for every client. **Resolved 2026-11-11:** yes, kept as written.
+5. Whether to label Tier 2 as the recommended pick, and with what wording. **Resolved 2026-11-11:** no label; heavier border only.
+6. Hosting and domain (the page is static and will deploy anywhere). **Resolved 2026-11-11:** GitHub Pages at https://christiantoro.github.io/serv-page/.
+7. Open Graph image: none for now, or one designed later. **Resolved 2026-11-11:** type-only card approved, `assets/og-image.png` (1200x630).
 
 ## 12. Decision log (agent appends; newest at bottom)
 
@@ -355,3 +355,9 @@ const CONTACT = {
 | 2026-11-10 | Font preload kept | A/B Lighthouse: removing it gave CLS 0.025 and unstable scores; with it CLS 0 and Performance 99 on repeat runs (7.3) | Agent |
 | 2026-11-10 | 2.5.1 finish gate (`gate.mjs`) not armed; its checks run by hand at full depth instead (`consistency.mjs` 5 widths, `copy-lint`, `perf.mjs`) | The gate caps waivers at 5 and counts one waiver per finding, so a page with ~280 plan-mandated findings can never pass; arming leaves a stateful build that would block later sessions | Agent |
 | 2026-11-10 | **Waiver ledger** (2.5.1 FAILs kept on purpose; each overruled by PLAN.md): placeholder + copy-residue (CLAUDE.md: tokens stay); no-visual, text-only, card-visual (7.2: no images); copy-headline, copy-fact, copy-headings, copy-two-fragment, copy-eyebrows (5.x approved copy and labels); heading-scale (label-only h2 for The Problem and Services, 5.2/5.4); stagger, top-stagger, row-gap (4.2 asymmetry, 5.4 stagger); scroll-reveal (4.5); section-air (4.4 thick rules); section-height, one-section, one-heading (user decision above); empty-area + section-gaps at 820x1180 (the same checker's hero-fill rule requires the full-screen hero on tall portrait screens); button-styles (checker reads the shadow layer as the fill; the Copy button is a deliberate utility style; 5.7 "Big CTA" is 64px); hover-move (tiers are not links; their CTA answers hover); container-edges (2.5.1's own markup names). WARNs left as is: hero-enter, moment-none (2.5.1 motion not in 4.5), nav-current, share-meta (Open decision 7) | Phase 4 QA | Agent |
+| 2026-11-11 | Launch values filled: name, email, tier names (the 5.6 suggestions), prices $749 / $1,399 / $2,250, Tier 3 detail "priority support, $399/month" | User-supplied (Open decisions 1-3) | User |
+| 2026-11-11 | Prices display as amount + small mono "ONE-TIME" (`.tier__price-note`) | User chose to label one-time fees so visitors don't assume a subscription | User |
+| 2026-11-11 | Tier 3 detail written "priority support, $399/month" (comma added) | Tightened punctuation only; meaning unchanged | Agent |
+| 2026-11-11 | "Answer + Book" encoded as `%2B` in mailto subjects | A bare `+` can be read as a space by some mail clients | Agent |
+| 2026-11-11 | Added `assets/og-image.png` (type-only card: headline, name, orange tag; 1200x630, 52 KB) with `og:url`, `og:image` (+ width, height, alt), `twitter:card`, and a canonical link, all on https://christiantoro.github.io/serv-page/ | Open decisions 6 and 7; image approved by user | User |
+| 2026-11-11 | Added pricing line: "You pay the software subscriptions (usually $20 to $100 a month) directly to each provider." | User: make clients' monthly fee responsibilities explicit so "Nothing hidden" holds. The range is an estimate from typical inbox/chat ($19-$120) and booking (free-$50) plans; confirm against the tools actually used | User |

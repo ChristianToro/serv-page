@@ -585,6 +585,7 @@ main > section { padding-block: var(--section-pad); }
   max-width: 16ch;
 }
 .pricing__intro { font-size: var(--fs-lead); }
+.pricing__fees { margin-top: 0.5rem; }
 
 .tiers {
   display: grid;
@@ -631,6 +632,13 @@ main > section { padding-block: var(--section-pad); }
   padding-block: 0.75rem;
   border-block: var(--rule-thin) solid var(--ink);
   margin-bottom: 1.5rem;
+}
+.tier__price-note {
+  font-weight: 400;
+  font-size: var(--fs-label);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 .tier .btn { align-self: stretch; }
 .tier .btn--outline { --btn-face: var(--white); }

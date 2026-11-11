@@ -3,7 +3,7 @@
    index.html hrefs, so mailto links also work with JS off.
    ========================================================= */
 const CONTACT = {
-  email: "{{CONTACT_EMAIL}}",
+  email: "christian.toro620@gmail.com",
   defaultSubject: "Question about help for my shop",
   bodyTemplate: "Shop name:\nHow customers reach us now (text, DMs, calls):\nWhat keeps going wrong:\n"
 };
@@ -99,6 +99,7 @@ const REVEAL_SELECTOR = [
   ".plain p:not(.section-label)",
   ".service",
   ".pricing__intro",
+  ".pricing__fees",
   ".tier",
   ".pricing__help",
   ".contact .wrap > p",

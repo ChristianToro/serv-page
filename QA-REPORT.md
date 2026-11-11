@@ -3,7 +3,7 @@
 **Phase:** 4 (QA), per `PLAN.md` Section 9
 **Date:** 2026-11-10
 **Build:** `index.html`, `css/styles.css`, `js/main.js` after commit `ce87c4c` plus the Phase 4 fixes below
-**Status:** All checks pass. Not yet launch-ready: placeholders and open decisions remain (see Launch gate).
+**Status:** All checks pass. Launch gate passed 2026-11-11 (see Section 7).
 
 ---
 
@@ -125,16 +125,19 @@ WARNs left as is: hero-enter and moment-none (2.5.1 motion not in PLAN.md 4.5), 
 
 ## 7. Launch gate (user-owned, PLAN.md Section 9)
 
+Updated 2026-11-11, after the launch values were filled in.
+
 | Item | Status |
 |---|---|
-| `grep -rn "{{" index.html css js` returns nothing | **Open:** 9 distinct tokens remain |
-| No `PRICE TBD` remains | **Open:** 3 instances |
-| All Open decisions resolved (Section 11) | **Open:** 7 of 7 |
+| `grep -rn "{{" index.html css js` returns nothing | **Pass** |
+| No `PRICE TBD` remains | **Pass:** $749 / $1,399 / $2,250, labelled one-time |
+| All Open decisions resolved (Section 11) | **Pass:** 7 of 7 |
 
-Tokens to fill, in both `index.html` and the `CONTACT` block at the top of `js/main.js`:
-`{{YOUR_NAME}}`, `{{CONTACT_EMAIL}}`, `{{TIER_1_NAME}}`, `{{TIER_2_NAME}}`, `{{TIER_3_NAME}}`, `{{TIER_1_PRICE}}`, `{{TIER_2_PRICE}}`, `{{TIER_3_PRICE}}`, `{{TIER_3_SUPPORT_DETAIL}}`.
+Re-verified after filling: layout clean at 320 to 1920 px in all three modes, 25 of 25 reveals, all 7 mailto links open to the real address with the right subjects, copy button copies it, `copy-lint` 0 FAIL, `perf.mjs` 0 FAIL, Lighthouse 99 / 100 / 100 / 100.
 
-Price tokens sit in HTML comments next to each `PRICE TBD`; replace both.
+Added at launch with the user's approval: the share image and tags (`og:image`, `twitter:card`, canonical) and a pricing line stating that clients pay software subscriptions directly to each provider.
+
+Still open, by the user's choice: a forwarding address in place of the personal email (one value in `index.html` and one in `js/main.js`).
 
 ---
 
